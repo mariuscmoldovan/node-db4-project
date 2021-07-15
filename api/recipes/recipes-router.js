@@ -2,11 +2,18 @@
 
 const router = require('express').Router()
 
+const Recipe = require('./recipes-model')
 
 
-router.use('*', (req, res, next) => {
-    next({status:404, message: 'not found'})
-})
+router.get('/:recipe_id',(req, res, next) => {
+    Recipe.getRecipeById(req.params.recipe_id)
+        .then(resourse => {
+          res.status(200).json(resourse)
+        })
+        .catch(next)
+ })
+
+
 
 router.use((err, req, res, next) => { // eslint-disable-line
     res.status(err.status || 500).json({
